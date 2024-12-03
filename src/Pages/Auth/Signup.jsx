@@ -19,11 +19,23 @@ export default function Signup() {
         setSignupDetails({...signupDetails,[name]:value})
     }
 
+    function resetForm() {
+        setSignupDetails({
+            username: '',
+            email: '',
+            password: ''      
+        })
+    }
+
     async function onFormSubmit(e) {
         e.preventDefault();
         console.log(signupDetails);
         const response = await dispatch(signup(signupDetails));
         console.log(response);
+        if(response?.payload?.data) {
+            navigate('/signin');
+        }
+        resetForm();
     }
 
     return(
