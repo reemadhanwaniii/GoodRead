@@ -1,4 +1,4 @@
-import { configureStore,getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore} from "@reduxjs/toolkit";
 import authSliceReducer from "Redux/Slices/AuthSlice";
 
 export default configureStore({
@@ -6,7 +6,8 @@ export default configureStore({
         auth: authSliceReducer
     },
     devTools: true,
-    middleware: (getDefaultMiddleware) => {
-        getDefaultMiddleware({serializableCheck: false})
-    }
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+          serializableCheck: false,
+        }),
 });

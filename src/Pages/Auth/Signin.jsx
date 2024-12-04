@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom"
-import { signin } from "src/Redux/Slices/AuthSlice";
+import { signin } from "Redux/Slices/AuthSlice";
+import Layout from "Layouts/Layout";
 
 export default function Signin() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+    const state = useSelector((state) => state.auth);
 
     const [signinDetails,setSigninDetails] = useState({
         email: '',
@@ -31,12 +32,19 @@ export default function Signin() {
         console.log(signinDetails);
         const response = await dispatch(signin(signinDetails));
         if(response?.payload?.data) {
-            navigate('/');
+            navigate('/dashboard');
         }
         resetForm();
     }
 
+    useEffect(()=>{
+        if(state.isLoggedIn) {
+            navigate("/dashboard");
+        }
+    },[]);
+
     return(
+        <Layout>
         <div className="h-[100vh] flex flex-col items-center justify-center">
             <div>
                 <h1 className="text-white text-5xl">Login to your account</h1>
@@ -82,5 +90,6 @@ export default function Signin() {
                 </form>
             </div>
         </div>
+        </Layout>
     )
 }

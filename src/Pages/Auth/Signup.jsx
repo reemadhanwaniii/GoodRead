@@ -1,12 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { signup } from "src/Redux/Slices/AuthSlice";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { signup } from "Redux/Slices/AuthSlice";
+import Layout from "Layouts/Layout";
 
 export default function Signup() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const state = useSelector((state) => state.auth);
 
     const [signupDetails,setSignupDetails] = useState({
         username: '',
@@ -38,7 +40,14 @@ export default function Signup() {
         resetForm();
     }
 
+    useEffect(()=>{
+        if(state.isLoggedIn) {
+            navigate("/dashboard");
+        }
+    },[]);
+
     return(
+        <Layout>
         <div className="h-[100vh] flex flex-col items-center justify-center">
             <div>
                 <h1 className="text-white text-5xl">Create a new Account</h1>
@@ -94,5 +103,6 @@ export default function Signup() {
                 </form>
             </div>
         </div>
+        </Layout>
     )
 }
